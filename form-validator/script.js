@@ -3,61 +3,56 @@ const username = document.getElementById('username')
 const email = document.getElementById('email')
 const password = document.getElementById('password')
 const password2 = document.getElementById('password2')
-const formError = document.getElementById('form-error-message')
 
 function showError(input, message) {
-  // add form-control error classes to parent element
-  // insert message into small innertext
-  if(input === '') {
-    formError.parentElement.className = 'form-control error'
-    formError.innerText = message;
-  } else {
-    const formControl = input.parentElement
-    const small = formControl.querySelector('small')
-    formControl.className = 'form-control error';
-    small.innerText = message;
-  }
+  const formControl = input.parentElement
+  const small = formControl.querySelector('small')
+  formControl.className = 'form-control error';
+  small.innerText = message;
 }
 
 function showSuccess(input) {
-// add form-control success classes to parent element
-  console.log('no error')
+  const formControl = input.parentElement
+  formControl.className = 'form-control success'
 }
 
 function checkEmail(input) {
-  //use regex to verify input is a valid email then show success message
-  // else show error and message: Email is not valid
   const emailTest = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  emailTest.test(input.value.trim()) ? showSuccess(input) : showError(input, 'Email is not valid')
+  emailTest.test(input.value.trim()) ? showSuccess(input) : showError(input,
+      'Email is not valid')
 }
 
-function isEmpty(inputsArr) {
-  // check every input is not empty
-  if(!Array.isArray(inputsArr) || !inputsArr.length ) {
-    showError('','Fields cannot be empty')
-    return;
-  }
-
+function isEmpty(input) {
   let isEmpty = false;
-  inputsArr.forEach((input) => {
-    console.log('reading')
-    if(input.value.trim() === '') {
-      showError(input, `${getFieldName(input)} is required`)
-      isEmpty = true;
-    } else {
-      showSuccess(input)
-    }
-  })
+  if (input.value.trim() === '') {
+    showError(input, `${getFieldName(input)} is required`)
+    isEmpty = true;
+  }
 
   return isEmpty;
 }
 
 function checkLength(input, min, max) {
-
+  const inputValueLength = input.value.trim().length
+  if (inputValueLength < min) {
+    showError(input,
+        `${getFieldName(input)} must be at least ${min} characters`)
+  } else if (inputValueLength > max) {
+    showError(
+        input,
+        `${getFieldName(input)} must be less than ${max} characters`
+    );
+  } else {
+    showSuccess(input)
+  }
 }
 
 function checkPasswordsMatch(input1, input2) {
-
+  if (input1.value.trim() !== input2.value.trim()) {
+    showError(input2, 'Passwords do not match')
+  } else {
+    showSuccess(input2)
+  }
 }
 
 function getFieldName(input) {
@@ -67,18 +62,16 @@ function getFieldName(input) {
 // Event listeners
 form.addEventListener('submit', (event) => {
   event.preventDefault();
-  console.log(!isEmpty())
-
-  if(isEmpty([username, email, password])) {
-    console.log(isEmpty([username, email, password]))
-    //check other validations
-    //username
+  if (!isEmpty(username)) {
     checkLength(username, 3, 15)
-    //password
-    checkLength(password, 8, 25)
-    //email
+  }
+  if (!isEmpty(email)) {
     checkEmail(email)
-    //passwords
+  }
+  if (!isEmpty(password)) {
+    checkLength(password, 8, 25)
+  }
+  if (!isEmpty(password) && !isEmpty(password2)) {
     checkPasswordsMatch(password, password2)
   }
 })
