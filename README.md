@@ -2,7 +2,7 @@
 
 |  #  |            Project             |       Live Demo       |
 | :-: | :----------------------------: |:---------------------:|
-| 01  |       [Form Validator]()       | [Pending Live Demo]() |
+| 01  |       [Form Validator](https://github.com/TinninBrittany/javascriptwebprojects/tree/main/form-validator)       | [Pending Live Demo]() |
 | 02  |     [Movie Seat Booking]()    | [Pending Live Demo]() |
 | 03  |    [Custom Video Player]()     | [Pending Live Demo]() |
 | 04  |  [Exchange Rate Calculator]()  | [Pending Live Demo]() |
